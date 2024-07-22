@@ -59,7 +59,6 @@ const GenerateBlocks: React.FC = () => {
           </div>
         );
         setInputFields([]);
-        console.log(data);
       } catch (error: any) {
         console.log(error);
         toast.error(error.response.data.message);

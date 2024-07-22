@@ -64,7 +64,7 @@ const AllBlocksPage: React.FC = () => {
           <tbody>
             {context?.blocks?.map((block, index) => (
               <tr key={index}>
-                <td>{block.data.action || "---Genisis Block---"}</td>
+                <td>{block.data?.action || "---Genisis Block--- "}</td>
                 <td>
                   <OverlayTrigger
                     trigger={["hover", "focus"]}
@@ -72,18 +72,18 @@ const AllBlocksPage: React.FC = () => {
                     overlay={
                       <Popover className="bg-dark">
                         <Popover.Body className="text-white">
-                          {block.data.ref_id?.slice(0, 15)}
+                          {block.data?.ref_id?.slice(0, 15)}
                         </Popover.Body>
                       </Popover>
                     }
                   >
                     <span
                       onClick={() => {
-                        navigator.clipboard.writeText(block.data.ref_id);
+                        navigator.clipboard.writeText(block.data?.ref_id);
                         toast.success("Copied successfully");
                       }}
                     >
-                      {block.data.ref_id}
+                      {block.data?.ref_id || "--Genisis Block---"}
                     </span>
                   </OverlayTrigger>
                 </td>
@@ -157,7 +157,7 @@ const AllBlocksPage: React.FC = () => {
                     overlay={
                       <Popover className="bg-dark">
                         <Popover.Body className="text-white">
-                          {block.data.user_agent || "---Genisis Block--- "}
+                          {block.data?.user_agent || "---Genisis Block--- "}
                         </Popover.Body>
                       </Popover>
                     }
@@ -168,11 +168,13 @@ const AllBlocksPage: React.FC = () => {
                         toast.success("Copied successfully");
                       }}
                     >
-                      {block.data.user_agent?.substring(0, 15)}...
+                      {block.data?.user_agent?.substring(0, 15) ||
+                        "Genisi Block"}
+                      ...
                     </span>
                   </OverlayTrigger>
                 </td>
-                <td>{block.data.ip}</td>
+                <td>{block.data?.ip || "Genisis Block"}</td>
                 <td>{new Date(block.created_on).toLocaleString()}</td>
                 <td>
                   <button
