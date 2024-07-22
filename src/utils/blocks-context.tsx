@@ -7,6 +7,7 @@ import {
 } from "react";
 
 interface Block {
+  _id: string;
   data: {
     action: string;
     ref_id: string;

@@ -9,8 +9,6 @@ import axios from "../utils/axios";
 const AllBlocksPage: React.FC = () => {
   const context = useContext(BlockContext);
 
-  console.log(context);
-
   const getBlocks = async () => {
     try {
       const { data } = await axios(
@@ -27,6 +25,20 @@ const AllBlocksPage: React.FC = () => {
       getBlocks();
     }
   }, []);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete("/bsa/deleteBlockById", { data: { id: id } });
+      const blocks = context?.blocks;
+      if (blocks) {
+        const updatedBlocks = blocks.filter((b) => b._id !== id);
+        context.setBlocks(updatedBlocks);
+      }
+      toast.success("Deleted Block Successfully");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -163,7 +175,12 @@ const AllBlocksPage: React.FC = () => {
                 <td>{block.data.ip}</td>
                 <td>{new Date(block.created_on).toLocaleString()}</td>
                 <td>
-                  <button className="btn btn-danger">Delete</button>
+                  <button
+                    onClick={() => handleDelete(block._id)}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
