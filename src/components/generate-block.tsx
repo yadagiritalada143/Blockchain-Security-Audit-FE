@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
-
+import axios from "../utils/axios";
+import { useContext } from "react";
+import { BlockContext } from "../utils/blocks-context";
 interface InputField {
   id: number;
   value: string;
 }
 
 const GenerateBlocks: React.FC = () => {
+  const context = useContext(BlockContext);
   const navigate = useNavigate();
   const [inputFields, setInputFields] = useState<InputField[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddField = () => {
     const newField: InputField = { id: Date.now(), value: "" };
@@ -29,7 +33,8 @@ const GenerateBlocks: React.FC = () => {
     );
   };
 
-  const handleGenerateBlock = () => {
+  const handleGenerateBlock = async () => {
+    setIsLoading(true);
     const emptyFields = inputFields.filter(
       (field) => field.value.trim() === ""
     );
@@ -38,14 +43,29 @@ const GenerateBlocks: React.FC = () => {
       toast.error("Please fill in all input fields.");
     } else {
       const actions = inputFields.map((field) => field.value);
-      console.log({ email: localStorage.getItem("email"), actions });
-      toast.success(
-        <div className="toast-button" onClick={() => navigate("/allblocks")}>
-          Successfully generated blocks, Click here to navigate to All Blocks
-        </div>
-      );
-      setInputFields([]);
+
+      try {
+        const { data } = await axios.post("/bsa/generateBlocks", {
+          email: localStorage.getItem("email"),
+          action_array: actions,
+        });
+        context?.setBlocks(data.data);
+        toast.success(
+          <div
+            className="btn btn-primary"
+            onClick={() => navigate("/allblocks")}
+          >
+            Successfully generated blocks, Click here to navigate to All Blocks
+          </div>
+        );
+        setInputFields([]);
+        console.log(data);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response.data.message);
+      }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -71,7 +91,7 @@ const GenerateBlocks: React.FC = () => {
           onClick={handleGenerateBlock}
           disabled={inputFields.length === 0}
         >
-          Generate Block
+          {isLoading ? "Generating..." : "Generate Block"}
         </button>
       </div>
       {inputFields.length === 0 && (

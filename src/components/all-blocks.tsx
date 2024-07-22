@@ -1,129 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, OverlayTrigger, Popover } from "react-bootstrap";
 import Navbar from "./navbar";
 import { toast } from "react-toastify";
-
-interface BlockData {
-  action: string;
-  referenceId: string;
-  precedingHash: string;
-  hash: string;
-  iterations: number;
-  userAgent: string;
-  ip: string;
-  createdAt: string;
-}
-
-const blockData: BlockData[] = [
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  {
-    action: "Action 1",
-    referenceId: "ref1234567890",
-    precedingHash: "prevhash1234567890abcdefgh",
-    hash: "hash1234567890abcdefgh",
-    iterations: 5,
-    userAgent: "Mozilla/5.0",
-    ip: "192.168.0.1",
-    createdAt: "2024-07-22T12:34:56Z",
-  },
-  // Add more block data as needed
-];
+import { useContext } from "react";
+import { BlockContext } from "../utils/blocks-context";
+import axios from "../utils/axios";
 
 const AllBlocksPage: React.FC = () => {
+  const context = useContext(BlockContext);
+
+  console.log(context);
+
+  const getBlocks = async () => {
+    try {
+      const { data } = await axios(
+        `/bsa/getBlocksByUser/${localStorage.getItem("email")}`
+      );
+      context?.setBlocks(data.data);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (context?.blocks.length === 0) {
+      getBlocks();
+    }
+  }, []);
+
   return (
     <>
       <Navbar />
       <div style={{ minHeight: "100vh" }} className="background">
-        <h2 className="text-center pt-4">All Blocks({blockData.length})</h2>
+        <h2 className="text-center pt-4">
+          All Blocks({context?.blocks?.length})
+        </h2>
         <Table className="container" striped bordered hover responsive>
           <thead>
             <tr>
@@ -139,9 +50,9 @@ const AllBlocksPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {blockData.map((block, index) => (
+            {context?.blocks?.map((block, index) => (
               <tr key={index}>
-                <td>{block.action}</td>
+                <td>{block.data.action || "---Genisis Block---"}</td>
                 <td>
                   <OverlayTrigger
                     trigger={["hover", "focus"]}
@@ -149,18 +60,18 @@ const AllBlocksPage: React.FC = () => {
                     overlay={
                       <Popover className="bg-dark">
                         <Popover.Body className="text-white">
-                          {block.referenceId.slice(0, 15)}
+                          {block.data.ref_id?.slice(0, 15)}
                         </Popover.Body>
                       </Popover>
                     }
                   >
                     <span
                       onClick={() => {
-                        navigator.clipboard.writeText(block.referenceId);
+                        navigator.clipboard.writeText(block.data.ref_id);
                         toast.success("Copied successfully");
                       }}
                     >
-                      {block.referenceId}
+                      {block.data.ref_id}
                     </span>
                   </OverlayTrigger>
                 </td>
@@ -188,18 +99,18 @@ const AllBlocksPage: React.FC = () => {
                       overlay={
                         <Popover className="bg-dark">
                           <Popover.Body className="text-white">
-                            {block.precedingHash}
+                            {block.preceding_hash}
                           </Popover.Body>
                         </Popover>
                       }
                     >
                       <span
                         onClick={() => {
-                          navigator.clipboard.writeText(block.precedingHash);
+                          navigator.clipboard.writeText(block.preceding_hash);
                           toast.success("Copied successfully");
                         }}
                       >
-                        {block.precedingHash.substring(0, 15)}...
+                        {block.preceding_hash?.substring(0, 15)}...
                       </span>
                     </OverlayTrigger>
                   </td>
@@ -222,7 +133,7 @@ const AllBlocksPage: React.FC = () => {
                         toast.success("Copied successfully");
                       }}
                     >
-                      {block.hash.substring(0, 15)}...
+                      {block.hash?.substring(0, 15)}...
                     </span>
                   </OverlayTrigger>
                 </td>
@@ -234,23 +145,23 @@ const AllBlocksPage: React.FC = () => {
                     overlay={
                       <Popover className="bg-dark">
                         <Popover.Body className="text-white">
-                          {block.userAgent}
+                          {block.data.user_agent || "---Genisis Block--- "}
                         </Popover.Body>
                       </Popover>
                     }
                   >
                     <span
                       onClick={() => {
-                        navigator.clipboard.writeText(block.userAgent);
+                        navigator.clipboard.writeText(block.data.user_agent);
                         toast.success("Copied successfully");
                       }}
                     >
-                      {block.userAgent.substring(0, 15)}...
+                      {block.data.user_agent?.substring(0, 15)}...
                     </span>
                   </OverlayTrigger>
                 </td>
-                <td>{block.ip}</td>
-                <td>{new Date(block.createdAt).toLocaleString()}</td>
+                <td>{block.data.ip}</td>
+                <td>{new Date(block.created_on).toLocaleString()}</td>
                 <td>
                   <button className="btn btn-danger">Delete</button>
                 </td>
