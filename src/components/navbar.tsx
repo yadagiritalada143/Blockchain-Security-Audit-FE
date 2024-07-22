@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
             Hello, {name.firstName} {name.lastName}
           </span>
           <OverlayTrigger
-            trigger="hover"
+            trigger={["hover", "focus"]}
             placement="bottom"
             overlay={
               <Popover className="bg-dark">

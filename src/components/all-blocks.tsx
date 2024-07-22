@@ -124,7 +124,7 @@ const AllBlocksPage: React.FC = () => {
       <Navbar />
       <div style={{ minHeight: "100vh" }} className="background">
         <h2 className="text-center pt-4">All Blocks({blockData.length})</h2>
-        <Table striped bordered hover responsive>
+        <Table className="container" striped bordered hover responsive>
           <thead>
             <tr>
               <th className="text-primary">Action</th>
@@ -144,7 +144,7 @@ const AllBlocksPage: React.FC = () => {
                 <td>{block.action}</td>
                 <td>
                   <OverlayTrigger
-                    trigger="hover"
+                    trigger={["hover", "focus"]}
                     placement="top"
                     overlay={
                       <Popover className="bg-dark">
@@ -167,23 +167,23 @@ const AllBlocksPage: React.FC = () => {
                 {index === 0 ? (
                   <td>
                     <OverlayTrigger
-                      trigger="hover"
+                      trigger={["hover", "focus"]}
                       placement="top"
                       overlay={
                         <Popover className="bg-dark">
                           <Popover.Body className="text-white">
-                            Gensis block is the first block in the blockchain
+                            Genesis block is the first block in the blockchain
                           </Popover.Body>
                         </Popover>
                       }
                     >
-                      <span>---Genisis-Block--- </span>
+                      <span>---Genesis-Block---</span>
                     </OverlayTrigger>
                   </td>
                 ) : (
                   <td>
                     <OverlayTrigger
-                      trigger="hover"
+                      trigger={["hover", "focus"]}
                       placement="top"
                       overlay={
                         <Popover className="bg-dark">
@@ -206,7 +206,7 @@ const AllBlocksPage: React.FC = () => {
                 )}
                 <td>
                   <OverlayTrigger
-                    trigger="hover"
+                    trigger={["hover", "focus"]}
                     placement="top"
                     overlay={
                       <Popover className="bg-dark">
@@ -229,7 +229,7 @@ const AllBlocksPage: React.FC = () => {
                 <td>{block.iterations}</td>
                 <td>
                   <OverlayTrigger
-                    trigger="hover"
+                    trigger={["hover", "focus"]}
                     placement="top"
                     overlay={
                       <Popover className="bg-dark">
