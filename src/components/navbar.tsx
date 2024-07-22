@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ProfileImage from "../assets/profile.jpg";
 import { useEffect, useState } from "react";
 import axios from "../utils/axios";
+import { Popover, OverlayTrigger } from "react-bootstrap";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -46,14 +47,25 @@ const Navbar: React.FC = () => {
           <span className="text-white me-4">
             Hello, {name.firstName} {name.lastName}
           </span>
-
-          <img
-            src={ProfileImage}
-            alt="Profile"
-            className="rounded-circle me-3"
-            style={{ width: "40px", height: "40px", cursor: "pointer" }}
-            onClick={goToProfile}
-          />
+          <OverlayTrigger
+            trigger="hover"
+            placement="bottom"
+            overlay={
+              <Popover className="bg-dark">
+                <Popover.Body className="text-white">
+                  View/Edit Profile
+                </Popover.Body>
+              </Popover>
+            }
+          >
+            <img
+              src={ProfileImage}
+              alt="Profile"
+              className="rounded-circle me-3"
+              style={{ width: "40px", height: "40px", cursor: "pointer" }}
+              onClick={goToProfile}
+            />
+          </OverlayTrigger>
 
           <button onClick={handleLogout} className="btn btn-danger">
             Logout

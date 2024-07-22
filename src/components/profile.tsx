@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put("/common/updateProfile", profileData);
+      await axios.put("/common/updateUserDetails", profileData);
       setProfileData((prev) => {
         return { ...prev, password: "" };
       });
@@ -83,14 +83,14 @@ const Profile: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="container mt-5">
+      <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card shadow-lg">
-              <div className="card-body">
+              <div className="card-body background">
                 <h2 className="mb-4 text-center">Profile</h2>
                 <form onSubmit={handleUpdate}>
-                  <div className="d-flex justify-content-evenly">
+                  <div className="d-flex justify-content-between">
                     <div className="mb-3">
                       <label htmlFor="firstName" className="form-label">
                         First Name
@@ -102,6 +102,7 @@ const Profile: React.FC = () => {
                         value={profileData.firstName}
                         onChange={handleChange}
                         className="form-control"
+                        style={{ widows: "300px" }}
                         required
                       />
                     </div>
@@ -116,6 +117,7 @@ const Profile: React.FC = () => {
                         value={profileData.lastName}
                         onChange={handleChange}
                         className="form-control"
+                        style={{ width: "300px" }}
                         required
                       />
                     </div>

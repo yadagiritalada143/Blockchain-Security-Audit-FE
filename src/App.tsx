@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./components/login";
 import Home from "./components/home";
 import Profile from "./components/profile";
+import AllBlocksPage from "./components/all-blocks";
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/allblocks" element={<AllBlocksPage />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>

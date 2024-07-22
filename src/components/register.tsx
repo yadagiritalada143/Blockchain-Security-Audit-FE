@@ -53,7 +53,7 @@ const Register: React.FC = () => {
       >
         <h2 className="card-title text-center mb-4">Register</h2>
         <form onSubmit={handleSubmit}>
-          <div className="d-flex justify-content-evenly">
+          <div className="d-flex justify-content-between">
             <div className="form-group">
               <label htmlFor="firstName" className="form-label">
                 First Name
@@ -139,19 +139,7 @@ const Register: React.FC = () => {
               required
             />
           </div>
-          <div className="form-check mx-4 mt-4">
-            <input
-              type="checkbox"
-              id="userRole"
-              name="userRole"
-              checked={formData.userRole}
-              onChange={handleChange}
-              className="form-check-input"
-            />
-            <label htmlFor="userRole" className="form-check-label">
-              Admin userRole
-            </label>
-          </div>
+
           <button
             type="submit"
             style={{ backgroundColor: "#0e7490" }}
